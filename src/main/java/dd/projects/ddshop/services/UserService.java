@@ -82,7 +82,7 @@ public class UserService {
         if(user.getDefault_delivery_address() == null)
             return new UserLoginRoleDTO(user.getId(),user.getFirstname(),user.getLastname(),
                     user.getPhone(),user.getEmail(),"",
-                    "","","","","");
+                    "","","","",user.getRole().name());
         return new UserLoginRoleDTO(user.getId(),user.getFirstname(),user.getLastname(),user.getPhone(),user.getEmail(),user.getDefault_delivery_address().getStreetLine(),user.getDefault_delivery_address().getPostalCode(),user.getDefault_delivery_address().getCity(),user.getDefault_delivery_address().getCounty(),user.getDefault_delivery_address().getCountry(),user.getRole().name());
     }
 }

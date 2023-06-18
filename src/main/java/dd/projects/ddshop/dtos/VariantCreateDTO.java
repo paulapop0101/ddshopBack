@@ -7,11 +7,13 @@ import java.util.List;
 
 @Data@AllArgsConstructor
 public class VariantCreateDTO {
-    private String quantity;
+    private int quantity;
 
-    private String price;
+    private float price;
 
     private int product_id;
+
+    private String picture;
 
     private List<Integer> attributes;
 }

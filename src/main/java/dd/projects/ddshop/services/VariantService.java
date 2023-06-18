@@ -10,6 +10,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -46,6 +48,10 @@ public class VariantService {
         final Variant variant= variantMapper.toModel(variantCreateDTO);
 
         variant.setProduct(productRepository.getReferenceById(variantCreateDTO.getProduct_id()));
+        variant.setAdded_date(Timestamp.valueOf(LocalDateTime.now()));
+        System.out.println(variantCreateDTO.getProduct_id());
+        System.out.println(productRepository.getReferenceById(variantCreateDTO.getProduct_id()).getId());
+
         final Variant v= variantRepository.save(variant);
         System.out.println(v.getId()+""+v.getAdded_date());
         return new VariantDTO();

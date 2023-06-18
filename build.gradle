@@ -33,6 +33,7 @@ dependencies {
 	annotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 	testImplementation 'junit:junit:4.13.2'
+	implementation 'com.cloudinary:cloudinary-http44:1.31.0'
 }
 
 tasks.named('test') {

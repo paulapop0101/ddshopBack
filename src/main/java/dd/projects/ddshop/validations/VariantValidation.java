@@ -15,11 +15,11 @@ public class VariantValidation {
 
     public void variantValidation(final VariantCreateDTO variantCreateDTO){
         checkEmpty(variantCreateDTO);
-        if(!variantCreateDTO.getQuantity().matches("\\d+")||Integer.parseInt(variantCreateDTO.getQuantity())==0) {
-            throw new IncorrectInput(Util.getMessage("api.error.quantity.format", null));
-        }
-        if(!variantCreateDTO.getPrice().matches("\\d+(\\.\\d\\d?)?")|| Float.parseFloat(variantCreateDTO.getPrice())==0)
-            throw new IncorrectInput(Util.getMessage("api.error.price.format", null));
+//        if(!variantCreateDTO.getQuantity().matches("\\d+")||Integer.parseInt(variantCreateDTO.getQuantity())==0) {
+//            throw new IncorrectInput(Util.getMessage("api.error.quantity.format", null));
+//        }
+//        if(!variantCreateDTO.getPrice().matches("\\d+(\\.\\d\\d?)?")|| Float.parseFloat(variantCreateDTO.getPrice())==0)
+//            throw new IncorrectInput(Util.getMessage("api.error.price.format", null));
 
     }
 
@@ -27,7 +27,7 @@ public class VariantValidation {
 
 
     private void checkEmpty(final VariantCreateDTO variantCreateDTO) {
-        if(variantCreateDTO.getQuantity()==null||variantCreateDTO.getPrice()==null||variantCreateDTO.getQuantity().isEmpty()||variantCreateDTO.getPrice().isEmpty() )
+        if(variantCreateDTO.getQuantity() <= 0 ||variantCreateDTO.getPrice() <=0  )
             throw new IncorrectInput(Util.getMessage("api.error.empty.fields", null));
     }
 }

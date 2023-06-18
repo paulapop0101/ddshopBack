@@ -25,6 +25,8 @@ public class Variant {
 
     private Timestamp added_date;
 
+    private String url;
+
     @ManyToOne
     @JoinColumn(name="product_id", referencedColumnName = "id")
     private Product product;

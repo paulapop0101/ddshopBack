@@ -30,11 +30,6 @@ public class Product {
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<Variant> variants;
 
-    public Product(String name, String description, Subcategory subcategory) {
-        this.name=name;
-        this.description=description;
-        this.subcategory = subcategory;
-        this.variants=new ArrayList<>();
-    }
+
 
 }

@@ -5,10 +5,8 @@ import dd.projects.ddshop.models.AssignedValue;
 import dd.projects.ddshop.models.AttributeValue;
 import dd.projects.ddshop.models.ProductAttribute;
 import dd.projects.ddshop.models.Variant;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.ReportingPolicy;
+import dd.projects.ddshop.utils.ImageStorageUtil;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +48,17 @@ public interface VariantMapper {
 //    List<VarAssignedValueDTO> toDto(List<ProductAttribute> productAttribute);
 
     @Mappings({
-            @Mapping(target = "assignedValues", expression = "java(toModel(variantCreateDTO.getAttributes()))")
+            @Mapping(target = "assignedValues", expression = "java(toModel(variantCreateDTO.getAttributes()))"),
+            @Mapping(target = "url", expression = "java(getURLs(variantCreateDTO))"),
     })
     Variant toModel(VariantCreateDTO variantCreateDTO);
 
+
+    default String getURLs(VariantCreateDTO variantCreateDTO) {
+
+        String pictureUri = ImageStorageUtil.hostImage(String.valueOf(variantCreateDTO.hashCode()), variantCreateDTO.getPicture());
+        return pictureUri;
+    }
     default AssignedValue toModel(final int attribute){
         final AssignedValue a = new AssignedValue();
         a.setId(attribute);

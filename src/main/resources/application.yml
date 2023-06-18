@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/shopdb
+    url: jdbc:mysql://localhost:3307/shop
     username: root
     password: Oanaaaa02.
   jpa:

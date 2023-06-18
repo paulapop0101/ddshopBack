@@ -41,6 +41,14 @@ public class CategoryController {
     public ResponseEntity<String> addSubcategory(@RequestParam(name= "name") final String name, @PathVariable final int id){
         return new ResponseEntity<>(categoryService.addSubcategory(name,id),HttpStatus.OK);
     }
+    @PutMapping("/editSubcategoryName/{id}")
+    public ResponseEntity<String> editSubcategory(@RequestParam(name= "name") final String name, @PathVariable final int id){
+        return new ResponseEntity<>(categoryService.editSubcategory(name,id),HttpStatus.OK);
+    }
+    @PutMapping("/editCategoryName/{id}")
+    public ResponseEntity<String> editCategory(@RequestParam(name= "name") final String name, @PathVariable final int id){
+        return new ResponseEntity<>(categoryService.editCategory(name,id),HttpStatus.OK);
+    }
     @DeleteMapping("/deleteCategory/{id}")
     public boolean deleteCategory(@PathVariable final int id){
         return categoryService.deleteCategory(id);

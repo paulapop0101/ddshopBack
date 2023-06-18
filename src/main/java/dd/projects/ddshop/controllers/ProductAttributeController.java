@@ -24,21 +24,16 @@ public class ProductAttributeController {
         this.attributeService = attributeService;
     }
 
-//    @PostMapping("/addAttributee")
-//    public ResponseEntity<AttributeCreateDTO> addAttributee(@RequestBody final AttributeCreateDTO attributeCreateDTO) {
-//        return new ResponseEntity<>(attributeService.addAttributee(attributeCreateDTO), HttpStatus.OK);
-//    }
-
     @PostMapping("/addAttribute")
     public ResponseEntity<Integer> addAttribute(@RequestParam(name= "name") final String name) {
         return new ResponseEntity<>(attributeService.addAttribute(name), HttpStatus.OK);
     }
-    @PostMapping("/addSubcategoryToAttributee/{id}")
-    public ResponseEntity<SubcategoryDTO> addSubcategoryToAttributee(@RequestBody final SubcategoryDTO subcategoryDTO, @PathVariable final int id) {
-        return new ResponseEntity<>(attributeService.addSubcategoryToAttributee(subcategoryDTO,id), HttpStatus.OK);
-    }
     @PostMapping("/addSubcategoryToAttribute/{id}")
-    public ResponseEntity<Boolean> addSubcategoryToAttributeee(@RequestBody final List<Integer> subcategoryDTO, @PathVariable final int id) {
+    public ResponseEntity<String> addSubcategoryToAttributee(@RequestParam(name= "subcategoryId") final int subcategoryId, @PathVariable final int id) {
+        return new ResponseEntity<>(attributeService.addSubcategoryToAttributee(subcategoryId,id), HttpStatus.OK);
+    }
+    @PostMapping("/addSubcategoriesToAttribute/{id}")
+    public ResponseEntity<Boolean> addSubcategoryToAttribute(@RequestBody final List<Integer> subcategoryDTO, @PathVariable final int id) {
         return new ResponseEntity<>(attributeService.addSubcategoryToAttribute(subcategoryDTO,id), HttpStatus.OK);
     }
     @PostMapping("/addAttributeValue/{id}")
@@ -65,6 +60,14 @@ public class ProductAttributeController {
     @PutMapping("/deleteSubcategoryFromAttribute/{id}")
     public boolean deleteSubcategoryFromAttribute(@PathVariable final int id,@RequestBody final SubcategoryDTO subcategoryDTO){
         return attributeService.deleteSubcategoryFromAttribute(id,subcategoryDTO);
+    }
+    @PutMapping("/editValueName/{id}")
+    public ResponseEntity<String> editValue(@RequestParam(name= "name") final String name, @PathVariable final int id){
+        return new ResponseEntity<>(attributeService.editValue(name,id),HttpStatus.OK);
+    }
+    @PutMapping("/editAttributeName/{id}")
+    public ResponseEntity<String> editAttribute(@RequestParam(name= "name") final String name, @PathVariable final int id){
+        return new ResponseEntity<>(attributeService.editAttribute(name,id),HttpStatus.OK);
     }
 
 

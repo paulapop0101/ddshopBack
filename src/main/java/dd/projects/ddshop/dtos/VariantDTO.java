@@ -16,5 +16,7 @@ public class VariantDTO {
     private float price;
     private int quantity;
     private String added_date;
+
+    private String url;
     private List<AssignedValueDTO> assignedValues;
 }

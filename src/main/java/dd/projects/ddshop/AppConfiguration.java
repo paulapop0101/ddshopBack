@@ -13,7 +13,8 @@ public class AppConfiguration {
                 = new ReloadableResourceBundleMessageSource();
         messageSource.setBasenames(
                 "classpath:messages/api_error_messages",
-                "classpath:messages/api_response_messages"
+                "classpath:messages/api_response_messages",
+                "classpath:messages/secret_keys"
         );
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;

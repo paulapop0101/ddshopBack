@@ -2,9 +2,12 @@ package dd.projects.ddshop.services;
 
 import dd.projects.ddshop.dtos.AttributeDTO;
 import dd.projects.ddshop.dtos.SubcategoryDTO;
+import dd.projects.ddshop.exceptions.EntityAlreadyExists;
+import dd.projects.ddshop.exceptions.IncorrectInput;
 import dd.projects.ddshop.mappers.AttributeMapper;
 import dd.projects.ddshop.models.*;
 import dd.projects.ddshop.repositories.*;
+import dd.projects.ddshop.utils.Util;
 import dd.projects.ddshop.validations.AttributeValidation;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,12 +99,13 @@ public class AttributeService {
                 .collect(toList());
     }
 
-    public SubcategoryDTO addSubcategoryToAttributee(final SubcategoryDTO subcategoryDTO, final int id) {
+    public String addSubcategoryToAttributee(final int subcategoryId, final int id) {
         final ProductAttribute attribute = productAttributeRepository.getReferenceById(id);
-        attribute.getSubcategories().add(subcategoryRepository.getReferenceById(subcategoryDTO.getId()));
+        if(!attribute.getSubcategories().contains(subcategoryRepository.getReferenceById(subcategoryId)))
+            attribute.getSubcategories().add(subcategoryRepository.getReferenceById(subcategoryId));
         productAttributeRepository.save(attribute);
 
-        return subcategoryDTO;
+        return "ok";
     }
     public boolean addSubcategoryToAttribute(final List<Integer> subcategory_id, final int id) {
         final ProductAttribute attribute = productAttributeRepository.getReferenceById(id);
@@ -125,5 +129,35 @@ public class AttributeService {
         productAttributeRepository.save(attribute);
         subcategoryRepository.save(s);
         return true;
+    }
+
+    public String editValue(String name, int id) {
+        if(name=="")
+            throw new IncorrectInput(Util.getMessage("api.error.empty.field", null));
+
+        AttributeValue value = attributeValueRepository.getReferenceByValue(name);
+
+        if(value!=null)
+            throw new EntityAlreadyExists(Util.getMessage("api.error.duplicate", new Object[]{"Value","name"}));
+
+        value = attributeValueRepository.getReferenceById(id);
+        value.setValue(name);
+        attributeValueRepository.save(value);
+        return "ok";
+    }
+
+    public String editAttribute(String name, int id) {
+        if(name=="")
+            throw new IncorrectInput(Util.getMessage("api.error.empty.field", null));
+
+        ProductAttribute productAttribute = productAttributeRepository.getProductAttributeByName(name);
+
+        if(productAttribute!=null)
+            throw new EntityAlreadyExists(Util.getMessage("api.error.duplicate", new Object[]{"Attribute","name"}));
+
+        productAttribute = productAttributeRepository.getReferenceById(id);
+        productAttribute.setName(name);
+        productAttributeRepository.save(productAttribute);
+        return "ok";
     }
 }

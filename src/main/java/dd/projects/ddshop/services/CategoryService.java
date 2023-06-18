@@ -2,6 +2,8 @@ package dd.projects.ddshop.services;
 
 import dd.projects.ddshop.dtos.CategoryDTO;
 import dd.projects.ddshop.dtos.SubcategoryDTO;
+import dd.projects.ddshop.exceptions.EntityAlreadyExists;
+import dd.projects.ddshop.exceptions.IncorrectInput;
 import dd.projects.ddshop.mappers.CategoryMapper;
 import dd.projects.ddshop.models.Category;
 import dd.projects.ddshop.models.ProductAttribute;
@@ -9,6 +11,7 @@ import dd.projects.ddshop.models.Subcategory;
 import dd.projects.ddshop.repositories.CategoryRepository;
 import dd.projects.ddshop.repositories.ProductAttributeRepository;
 import dd.projects.ddshop.repositories.SubcategoryRepository;
+import dd.projects.ddshop.utils.Util;
 import dd.projects.ddshop.validations.CategoryValidation;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,4 +87,32 @@ public class CategoryService {
         return categoryMapper.toDTO(subcategoryRepository.findAll());
     }
 
+    public String editSubcategory(String name, int id) {
+        if(name=="")
+            throw new IncorrectInput(Util.getMessage("api.error.empty.field", null));
+
+        final Subcategory subcategory = subcategoryRepository.getReferenceById(id);
+        final Subcategory subcategory2 = subcategoryRepository.getSubcategoryByNameAndCategory_Name(name,subcategory.getCategory().getName());
+
+        if(subcategory2!=null)
+            throw new EntityAlreadyExists(Util.getMessage("api.error.duplicate", new Object[]{"Subcategory","name"}));
+        subcategory.setName(name);
+        subcategoryRepository.save(subcategory);
+        return "ok";
+    }
+
+    public String editCategory(String name, int id) {
+        if(name=="")
+            throw new IncorrectInput(Util.getMessage("api.error.empty.field", null));
+
+        Category category = categoryRepository.getCategoryByName(name);
+
+        if(category!=null)
+            throw new EntityAlreadyExists(Util.getMessage("api.error.duplicate", new Object[]{"Category","name"}));
+
+        category = categoryRepository.getReferenceById(id);
+        category.setName(name);
+        categoryRepository.save(category);
+        return "ok";
+    }
 }

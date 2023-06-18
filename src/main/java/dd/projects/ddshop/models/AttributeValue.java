@@ -20,6 +20,8 @@ public class AttributeValue {
 
     private String value;
 
+    @OneToOne(mappedBy = "attributeValue",cascade = CascadeType.ALL)
+    private AssignedValue assignedValue;
     @ManyToOne
     @JoinColumn(name = "product_attribute_id", referencedColumnName = "id")
     ProductAttribute product_attributes;
