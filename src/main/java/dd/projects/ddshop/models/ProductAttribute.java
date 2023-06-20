@@ -21,6 +21,8 @@ public class ProductAttribute {
 
     private String name;
 
+    private Boolean isOnPDP;
+
     @ManyToMany
     @JoinTable(name = "subcategory_product_attribute",
             joinColumns = @JoinColumn(name = "product_attribute_id", referencedColumnName = "id"),
@@ -33,6 +35,13 @@ public class ProductAttribute {
 
     public ProductAttribute(String name) {
         this.name = name;
+        this.subcategories=new ArrayList<>();
+        this.attributeValues = new ArrayList<>();
+    }
+
+    public ProductAttribute(String name, Boolean isOnPDP) {
+        this.name = name;
+        this.isOnPDP = isOnPDP;
         this.subcategories=new ArrayList<>();
         this.attributeValues = new ArrayList<>();
     }

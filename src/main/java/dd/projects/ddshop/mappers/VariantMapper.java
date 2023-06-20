@@ -53,6 +53,11 @@ public interface VariantMapper {
     })
     Variant toModel(VariantCreateDTO variantCreateDTO);
 
+    @Mappings({
+            @Mapping(target = "assignedValues", expression = "java(toModel(variantCreateDTO.getAttributes()))"),
+    })
+    Variant toModel(VariantUpdateDTO variantCreateDTO);
+
 
     default String getURLs(VariantCreateDTO variantCreateDTO) {
 
@@ -66,4 +71,6 @@ public interface VariantMapper {
     }
 
    List<AssignedValue> toModel(List<Integer> attributes);
+
+
 }

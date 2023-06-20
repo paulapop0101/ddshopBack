@@ -4,6 +4,7 @@ package dd.projects.ddshop.controllers;
 import dd.projects.ddshop.dtos.AttributeCreateDTO;
 import dd.projects.ddshop.dtos.AttributeDTO;
 import dd.projects.ddshop.dtos.SubcategoryDTO;
+import dd.projects.ddshop.dtos.newAttributeDTO;
 import dd.projects.ddshop.services.AttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,8 @@ public class ProductAttributeController {
     }
 
     @PostMapping("/addAttribute")
-    public ResponseEntity<Integer> addAttribute(@RequestParam(name= "name") final String name) {
-        return new ResponseEntity<>(attributeService.addAttribute(name), HttpStatus.OK);
+    public ResponseEntity<Integer> addAttribute(@RequestBody final newAttributeDTO attribute) {
+        return new ResponseEntity<>(attributeService.addAttribute(attribute), HttpStatus.OK);
     }
     @PostMapping("/addSubcategoryToAttribute/{id}")
     public ResponseEntity<String> addSubcategoryToAttributee(@RequestParam(name= "subcategoryId") final int subcategoryId, @PathVariable final int id) {
@@ -66,8 +67,8 @@ public class ProductAttributeController {
         return new ResponseEntity<>(attributeService.editValue(name,id),HttpStatus.OK);
     }
     @PutMapping("/editAttributeName/{id}")
-    public ResponseEntity<String> editAttribute(@RequestParam(name= "name") final String name, @PathVariable final int id){
-        return new ResponseEntity<>(attributeService.editAttribute(name,id),HttpStatus.OK);
+    public ResponseEntity<String> editAttribute(@RequestBody final newAttributeDTO attribute, @PathVariable final int id){
+        return new ResponseEntity<>(attributeService.editAttribute(attribute,id),HttpStatus.OK);
     }
 
 

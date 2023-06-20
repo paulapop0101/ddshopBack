@@ -2,6 +2,7 @@ package dd.projects.ddshop.services;
 
 import dd.projects.ddshop.dtos.AttributeDTO;
 import dd.projects.ddshop.dtos.SubcategoryDTO;
+import dd.projects.ddshop.dtos.newAttributeDTO;
 import dd.projects.ddshop.exceptions.EntityAlreadyExists;
 import dd.projects.ddshop.exceptions.IncorrectInput;
 import dd.projects.ddshop.mappers.AttributeMapper;
@@ -12,6 +13,7 @@ import dd.projects.ddshop.validations.AttributeValidation;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,9 +118,9 @@ public class AttributeService {
         return true;
     }
 
-    public int addAttribute(final String name) {
-        productAttributeRepository.save(new ProductAttribute(name));
-        return productAttributeRepository.getProductAttributeByName(name).getId();
+    public int addAttribute(final newAttributeDTO name) {
+        productAttributeRepository.save(new ProductAttribute(name.getName(),name.getIsOnPDP()));
+        return 1;
     }
 
     public boolean deleteSubcategoryFromAttribute(final int id, final SubcategoryDTO subcategoryDTO) {
@@ -146,17 +148,18 @@ public class AttributeService {
         return "ok";
     }
 
-    public String editAttribute(String name, int id) {
-        if(name=="")
+    public String editAttribute(final newAttributeDTO attribute, int id) {
+        if(attribute.getName()=="")
             throw new IncorrectInput(Util.getMessage("api.error.empty.field", null));
 
-        ProductAttribute productAttribute = productAttributeRepository.getProductAttributeByName(name);
+        ProductAttribute productAttribute = productAttributeRepository.getProductAttributeByName(attribute.getName());
 
-        if(productAttribute!=null)
+        if(productAttribute!=null && productAttribute.getId() != id)
             throw new EntityAlreadyExists(Util.getMessage("api.error.duplicate", new Object[]{"Attribute","name"}));
 
         productAttribute = productAttributeRepository.getReferenceById(id);
-        productAttribute.setName(name);
+        productAttribute.setName(attribute.getName());
+        productAttribute.setIsOnPDP(attribute.getIsOnPDP());
         productAttributeRepository.save(productAttribute);
         return "ok";
     }

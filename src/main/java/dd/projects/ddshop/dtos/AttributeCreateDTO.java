@@ -9,6 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 public class AttributeCreateDTO {
     private String name;
+
+    private Boolean isOnPDP;
     private List<String> values;
     private List<SubcategoryDTO> subcategories;
 }

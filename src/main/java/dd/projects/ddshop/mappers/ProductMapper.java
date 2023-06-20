@@ -3,15 +3,9 @@ package dd.projects.ddshop.mappers;
 import dd.projects.ddshop.dtos.ProductDTO;
 import dd.projects.ddshop.dtos.SubcategoryDTO;
 import dd.projects.ddshop.dtos.seeProductDTO;
-import dd.projects.ddshop.models.Picture;
 import dd.projects.ddshop.models.Product;
 import dd.projects.ddshop.models.Subcategory;
-import dd.projects.ddshop.utils.ImageStorageUtil;
 import org.mapstruct.*;
-
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,componentModel = "spring")
 public interface ProductMapper {

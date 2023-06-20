@@ -5,6 +5,7 @@ import dd.projects.ddshop.exceptions.EntityDoesNotExist;
 import dd.projects.ddshop.mappers.VariantMapper;
 import dd.projects.ddshop.models.*;
 import dd.projects.ddshop.repositories.*;
+import dd.projects.ddshop.utils.ImageStorageUtil;
 import dd.projects.ddshop.validations.VariantValidation;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,12 +111,16 @@ public class VariantService {
 
         return sizes;
     }
-    public void updateVariant(final VariantCreateDTO variantDTO, final int id){
+    public void updateVariant(final VariantUpdateDTO variantDTO, final int id){
         final Variant oldvariant = variantMapper.toModel(variantDTO);
         final Variant newvariant = variantRepository.getReferenceById(id);
         newvariant.setPrice(oldvariant.getPrice());
         newvariant.setQuantity(oldvariant.getQuantity());
         newvariant.setAssignedValues(oldvariant.getAssignedValues());
+        if(variantDTO.isNewpicture()) {
+            String pictureUri = ImageStorageUtil.hostImage(String.valueOf(variantDTO.hashCode()), variantDTO.getPicture());
+            newvariant.setUrl(pictureUri);
+        }
         System.out.println("here");
         variantRepository.save(newvariant);
     }

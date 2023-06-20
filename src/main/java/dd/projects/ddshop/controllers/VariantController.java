@@ -54,7 +54,7 @@ public class VariantController {
     }
 
     @PutMapping("/updateVariant/{id}")
-    public boolean updateVariant(@RequestBody final VariantCreateDTO variant,@PathVariable final int id)  {
+    public boolean updateVariant(@RequestBody final VariantUpdateDTO variant,@PathVariable final int id)  {
         variantService.updateVariant(variant,id);
         return true;
     }
