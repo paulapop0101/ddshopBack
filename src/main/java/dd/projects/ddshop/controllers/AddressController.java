@@ -2,6 +2,7 @@ package dd.projects.ddshop.controllers;
 
 import dd.projects.ddshop.AppConfiguration;
 import dd.projects.ddshop.dtos.AddressDTO;
+import dd.projects.ddshop.dtos.GetAddressDTO;
 import dd.projects.ddshop.dtos.UserCreationDTO;
 import dd.projects.ddshop.mappers.UserMapper;
 import dd.projects.ddshop.models.User;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
+@CrossOrigin
 public class AddressController {
 
     private final AddressService addressService;
@@ -39,10 +41,14 @@ public class AddressController {
         return new ResponseEntity<>("here", HttpStatus.OK);
     }
 
-    @PostMapping("/addAddress")
-    public ResponseEntity<Object> addAddress(@RequestBody final Address address) {
-        addressService.addAddress(address);
-        return new ResponseEntity<>(address, HttpStatus.OK);
+    @PostMapping("/addDAddress/{id}")
+    public ResponseEntity<String> addDAddress(@RequestBody final AddressDTO address,@PathVariable final int id) {
+        return new ResponseEntity<>(addressService.addDAddress(address,id), HttpStatus.OK);
+    }
+
+    @PostMapping("/addBAddress/{id}")
+    public ResponseEntity<String> addBAddress(@RequestBody final AddressDTO address,@PathVariable final int id) {
+        return new ResponseEntity<>(addressService.addBAddress(address,id), HttpStatus.OK);
     }
 
     @PutMapping("/updateAddress/{id}")
@@ -55,6 +61,16 @@ public class AddressController {
     public boolean deleteAddress(@PathVariable final int id)  {
 
         return  addressService.deleteAddress(id);
+    }
+
+    @GetMapping("/getBAddress/{id}")
+    public ResponseEntity<GetAddressDTO> getBAddress(@PathVariable final int id) {
+        return new ResponseEntity<>(addressService.getBAddress(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/getDAddress/{id}")
+    public ResponseEntity<GetAddressDTO> getDAddress(@PathVariable final int id) {
+        return new ResponseEntity<>(addressService.getDAddress(id), HttpStatus.OK);
     }
 
 

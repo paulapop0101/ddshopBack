@@ -46,7 +46,7 @@ public class UserService {
 
 
     public List<UserDTO> getAllUsers() {
-        return userRepository.findAll()
+        return userRepository.findAllByRoleNormal_user()
                 .stream()
                 .map(userMapper::toDTO)
                 .collect(toList());
@@ -84,5 +84,9 @@ public class UserService {
                     user.getPhone(),user.getEmail(),"",
                     "","","","",user.getRole().name());
         return new UserLoginRoleDTO(user.getId(),user.getFirstname(),user.getLastname(),user.getPhone(),user.getEmail(),user.getDefault_delivery_address().getStreetLine(),user.getDefault_delivery_address().getPostalCode(),user.getDefault_delivery_address().getCity(),user.getDefault_delivery_address().getCounty(),user.getDefault_delivery_address().getCountry(),user.getRole().name());
+    }
+
+    public int getTotalUsers() {
+        return userRepository.countUsers();
     }
 }

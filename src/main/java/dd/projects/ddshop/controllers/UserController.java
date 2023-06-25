@@ -48,6 +48,11 @@ public class UserController {
        return  userService.deleteUser(id);
     }
 
+    @GetMapping("/getUserCount")
+    public ResponseEntity<Integer> getTotalUsers(){
+
+        return new ResponseEntity<>( userService.getTotalUsers(), HttpStatus.OK);
+    }
 
 
 }

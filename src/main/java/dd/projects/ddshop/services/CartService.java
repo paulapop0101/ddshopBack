@@ -106,4 +106,12 @@ public class CartService {
     public Integer getItemsCount(final String email){
         return cartEntryRepository.countCartItems(email);
     }
+
+    public CartDTO getCart(int id) {
+        return cartMapper.toDTO(cartRepository.getReferenceById(id));
+    }
+
+    public int getSales() {
+        return cartEntryRepository.countSales();
+    }
 }

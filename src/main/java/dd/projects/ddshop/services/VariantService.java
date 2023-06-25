@@ -11,6 +11,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLOutput;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -106,7 +107,7 @@ public class VariantService {
             colors.add(new ColorsDTO(attributeValue.getId(),attributeValue.getValue()));
         return colors;
     }
-    public List<SizesDTO> getSizesByColor(final int productId, final String color) {
+    public List<SizesDTO> getSizesByColor(final int productId, final int color) {
         final List<SizesDTO> sizes = variantRepository.findSizesByProductID(productId,color);
 
         return sizes;
@@ -143,4 +144,64 @@ public class VariantService {
     public VariantDTO getVariant(final int id) {
         return variantMapper.toDTO(variantRepository.getReferenceById(id));
     }
+
+    public float getLowestPrice() {
+
+        return variantRepository.getFirstVariantByPriceASC().getPrice();
+    }
+    public float getHighestPrice() {
+        return 2;
+    }
+
+    public List<VariantDTO> getVariantsBySubcategory(final int id){
+        return variantMapper.toDTO(variantRepository.getByProduct_SubcategoryId(id));
+    }
+
+    public List<VariantDTO> getFilteredVariants(FilterDTO filters, int id) {
+        List<Variant> filtered;
+        if(filters.getAttributes().size() > 0) {
+            filtered = variantRepository.getFilteredByAttributes(id, filters.getLprice(), filters.getHprice(), filters.getAttributes().get(0).getAttributeId(), filters.getAttributes().get(0).getValueIds());
+            List<Variant> aux;
+            for (int i = 1; i < filters.getAttributes().size(); i++) {
+                aux = variantRepository.getFilteredByAttributes(id, filters.getLprice(), filters.getHprice(), filters.getAttributes().get(i).getAttributeId(), filters.getAttributes().get(i).getValueIds());
+                filtered.retainAll(aux);
+            }
+        }
+        else {
+            filtered = variantRepository.getFilteredByPrice(id, filters.getLprice(), filters.getHprice());
+        }
+        return variantMapper.toDTO(filtered);
+    }
+
+    public List<VariantDTO> getFilteredVariantsBySearch(FilterDTO filters, int id, String word) {
+        System.out.println(word);
+        List<Variant> filtered;
+        if(filters.getAttributes().size() > 0) {
+            filtered = variantRepository.getFilteredByAttributesWord(id, filters.getLprice(), filters.getHprice(), filters.getAttributes().get(0).getAttributeId(), filters.getAttributes().get(0).getValueIds(),word);
+            List<Variant> aux;
+            for (int i = 1; i < filters.getAttributes().size(); i++) {
+                aux = variantRepository.getFilteredByAttributesWord(id, filters.getLprice(), filters.getHprice(), filters.getAttributes().get(i).getAttributeId(), filters.getAttributes().get(i).getValueIds(),word);
+                filtered.retainAll(aux);
+            }
+        }
+        else {
+            filtered = variantRepository.getFilteredByPriceWord(id, filters.getLprice(), filters.getHprice(), word);
+        }
+        return variantMapper.toDTO(filtered);
+    }
+
+    public List<SizesDTO> getVariantFirstAttribute(int prodid, int attid) {
+        return variantRepository.getVariantsFirstAttribute(prodid,attid);
+    }
+
+    public List<SizesDTO> getVariantSecondAttribute(int prodid, int attid1, int attid2, String valId) {
+        return variantRepository.getVariantsSecondAttribute(prodid,attid1,attid2,valId);
+    }
+    public String getUrlBySubId(int id){
+        Variant variant = variantRepository.getFirstByProductSubcategoryId(id);
+        if(variant!=null)
+            return variant.getUrl();
+        return "../../../assets/images/frontpage.jpeg";
+    }
+
 }

@@ -13,7 +13,6 @@ import dd.projects.ddshop.validations.AttributeValidation;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ public class AttributeService {
 
 
     private final ProductAttributeRepository productAttributeRepository;
+    private final ProductRepository productRepository;
     private final AttributeValueRepository attributeValueRepository;
     private final AssignedValueRepository assignedValueRepository;
     private final SubcategoryRepository subcategoryRepository;
@@ -32,8 +32,9 @@ public class AttributeService {
     private final AttributeMapper attributeMapper = Mappers.getMapper(AttributeMapper.class);
 
     @Autowired
-    public AttributeService(final ProductAttributeRepository productAttributeRepository, final AttributeValueRepository attributeValueRepository, final AssignedValueRepository assignedValueRepository, final SubcategoryRepository subcategoryRepository){
+    public AttributeService(final ProductAttributeRepository productAttributeRepository, ProductRepository productRepository, final AttributeValueRepository attributeValueRepository, final AssignedValueRepository assignedValueRepository, final SubcategoryRepository subcategoryRepository){
         this.productAttributeRepository=productAttributeRepository;
+        this.productRepository = productRepository;
         this.attributeValueRepository=attributeValueRepository;
         this.assignedValueRepository = assignedValueRepository;
         this.subcategoryRepository = subcategoryRepository;
@@ -162,5 +163,21 @@ public class AttributeService {
         productAttribute.setIsOnPDP(attribute.getIsOnPDP());
         productAttributeRepository.save(productAttribute);
         return "ok";
+    }
+
+    public List<AttributeDTO> getAttributesbySub(int id) {
+        Subcategory subcategory = subcategoryRepository.getReferenceById(id);
+        List<ProductAttribute> productAttributes = productAttributeRepository.getProductAttributesBySubcategories(subcategory);
+
+        return productAttributes.stream()
+                .map(attributeMapper::toDTO)
+                .collect(toList());
+    }
+    public List<AttributeDTO> getPDPAttributes(int id) {
+        Product product = productRepository.getReferenceById(id);
+        List<ProductAttribute> attributes = productAttributeRepository.getProductAttributesBySubcategoriesAndIsOnPDPOrderById(product.getSubcategory(),true);
+        return attributes.stream()
+                .map(attributeMapper::toDTO)
+                .collect(toList());
     }
 }

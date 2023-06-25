@@ -12,9 +12,9 @@ public interface CartEntryRepository extends JpaRepository<Cart_entry,Integer> {
                     "where c.status=0 and c.user.email=:email"
     )
     Integer countCartItems(String email);
-   // Cart_entry findByVariant_idEquals(int id);
 
-
-//    @Query("SELECT Cart_entry .id FROM Cart_entry WHERE Cart_entry .variant_id = :id")
-//    Cart_entry findBySth(int id);
+    @Query(
+            "select sum(e.quantity) from Cart_entry e "
+    )
+    int countSales();
 }

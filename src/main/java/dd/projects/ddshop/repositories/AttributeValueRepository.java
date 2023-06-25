@@ -14,6 +14,4 @@ public interface AttributeValueRepository extends JpaRepository<AttributeValue,I
 
     AttributeValue getReferenceByValue(String name);
 
-//    @Query
-//    List<AttributeValue> findSizedByProductIdAndColor(int id, String color);
 }

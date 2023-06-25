@@ -58,6 +58,10 @@ public class ProductAttributeController {
     public ResponseEntity<List<AttributeDTO>> getAttributes(){
         return new ResponseEntity<>(attributeService.getAttributes(), HttpStatus.OK);
     }
+    @GetMapping("/getAttributes/{id}")
+    public ResponseEntity<List<AttributeDTO>> getAttributesbySubcategory(@PathVariable final int id){
+        return new ResponseEntity<>(attributeService.getAttributesbySub(id), HttpStatus.OK);
+    }
     @PutMapping("/deleteSubcategoryFromAttribute/{id}")
     public boolean deleteSubcategoryFromAttribute(@PathVariable final int id,@RequestBody final SubcategoryDTO subcategoryDTO){
         return attributeService.deleteSubcategoryFromAttribute(id,subcategoryDTO);
@@ -71,5 +75,8 @@ public class ProductAttributeController {
         return new ResponseEntity<>(attributeService.editAttribute(attribute,id),HttpStatus.OK);
     }
 
-
+    @GetMapping("getPDPAttributes/{id}")
+    public ResponseEntity<List<AttributeDTO>> getPDPAttributes(@PathVariable final int id){
+        return new ResponseEntity<>(attributeService.getPDPAttributes(id),HttpStatus.OK);
+    }
 }

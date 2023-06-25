@@ -15,7 +15,6 @@ import java.util.List;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE,componentModel = "spring")
 public interface AttributeMapper {
 
-  //  ProductAttribute toModel(AttributeCreateDTO attributeCreateDTO);
     @Mappings({
             @Mapping(target = "values", expression = "java(toDTOStr(attribute.getAttributeValues()))")
     })

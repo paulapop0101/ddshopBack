@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +15,18 @@ import java.util.List;
 @Entity
 @Table(name="variant")
 public class Variant {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Variant variant = (Variant) o;
+        return getUrl().equals(variant.getUrl());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUrl());
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

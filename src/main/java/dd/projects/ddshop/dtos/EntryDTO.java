@@ -7,11 +7,13 @@ import java.util.List;
 @Data
 public class EntryDTO {
    private int id;
-   private int variant_id;
+   private VariantDTO variant;
    private String name;
    private int quantity;
    private float price;
    private float totalPrice;
+
+   private String url;
    private List<AssignedValueDTO> assignedValueDTOList;
 
 }

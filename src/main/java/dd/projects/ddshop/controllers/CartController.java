@@ -49,9 +49,19 @@ public class CartController {
     public ResponseEntity<CartDTO> getUserCart( @PathVariable final String email) {
         return new ResponseEntity<>(cartService.getUserCart(email),HttpStatus.OK);
     }
+    @GetMapping("/getCartById/{id}")
+    public ResponseEntity<CartDTO> getCartById( @PathVariable final int id) {
+        return new ResponseEntity<>(cartService.getCart(id),HttpStatus.OK);
+    }
     @GetMapping("/getItemsCount/{email}")
     public ResponseEntity<Integer> getItemsCount(@PathVariable final String email){
         return new ResponseEntity<>(cartService.getItemsCount(email),HttpStatus.OK);
+    }
+
+    @GetMapping("/getSales")
+    public ResponseEntity<Integer> getSales(){
+
+        return new ResponseEntity<>( cartService.getSales(), HttpStatus.OK);
     }
 
 }
