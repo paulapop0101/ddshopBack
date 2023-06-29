@@ -3,12 +3,8 @@ package dd.projects.ddshop.services;
 import dd.projects.ddshop.dtos.OrderCreateDTO;
 import dd.projects.ddshop.dtos.OrderDTO;
 import dd.projects.ddshop.mappers.OrderMapper;
-import dd.projects.ddshop.mappers.UserMapper;
 import dd.projects.ddshop.models.*;
-import dd.projects.ddshop.repositories.AddressRepository;
-import dd.projects.ddshop.repositories.CartRepository;
-import dd.projects.ddshop.repositories.OrdersRepository;
-import dd.projects.ddshop.repositories.UserRepository;
+import dd.projects.ddshop.repositories.*;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,15 +23,18 @@ public class OrderService {
 
     private final AddressRepository addressRepository;
 
+    private final VariantRepository variantRepository;
+
     private final OrderMapper orderMapper = Mappers.getMapper(OrderMapper.class);
 
 
     @Autowired
-    public OrderService(final OrdersRepository ordersRepository, final UserRepository userRepository, final CartRepository cartRepository, final AddressRepository addressRepository) {
+    public OrderService(final OrdersRepository ordersRepository, final UserRepository userRepository, final CartRepository cartRepository, final AddressRepository addressRepository, VariantRepository variantRepository) {
         this.ordersRepository = ordersRepository;
         this.userRepository = userRepository;
         this.cartRepository = cartRepository;
         this.addressRepository = addressRepository;
+        this.variantRepository = variantRepository;
     }
 
     public OrderCreateDTO createOrder(final OrderCreateDTO orderCreateDTO){
@@ -44,6 +43,11 @@ public class OrderService {
         final Address address1 = addressRepository.getReferenceById(orderCreateDTO.getDelivery_address());
         final Address address2 = addressRepository.getReferenceById(orderCreateDTO.getInvoice_address());
         final Orders orders = new Orders(user,cart,orderCreateDTO.getPayment(),address1,address2);
+        for(Cart_entry cartEntry : cart.getCart_entries()){
+            Variant variant = cartEntry.getVariant_id();
+            variant.setQuantity(variant.getQuantity() - cartEntry.getQuantity());
+            variantRepository.save(variant);
+        }
         ordersRepository.save(orders);
         cart.setStatus(1);
         cartRepository.save(cart);
